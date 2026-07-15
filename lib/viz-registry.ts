@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import Tricuspoid from "@/components/viz/Tricuspoid";
 
 interface VizDefinition {
   component: React.LazyExoticComponent<(...args: any) => any>;
@@ -18,3 +19,19 @@ export function getViz(id: string): VizDefinition | undefined {
 export function getAllViz(): Map<string, VizDefinition> {
   return vizRegistry;
 }
+
+export const VIZ_COMPONENTS = getAllViz();
+
+// 注册三尖瓣线可视化组件
+registerViz("tricuspoid", lazy(() => Promise.resolve({ default: Tricuspoid })), {
+  rollingRatio: 1 / 3,
+  showFixedCircle: true,
+  showRollingCircle: true,
+  showTrace: true,
+  showPath: true,
+  showRadiusLine: true,
+  autoRotate: true,
+  speed: 0.02,
+  traceColor: "hsl(var(--math))",
+  pointColor: "hsl(var(--accent))",
+});

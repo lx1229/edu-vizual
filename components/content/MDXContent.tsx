@@ -44,13 +44,14 @@ function renderContent(content: string) {
   let vizConfig: Record<string, any> = {};
   let vizKey = 0;
   let paragraphLines: string[] = [];
+  let paragraphKey = 0;
 
   function flushParagraph() {
     if (paragraphLines.length > 0) {
       const text = paragraphLines.join("\n");
       if (text.trim()) {
         elements.push(
-          <p key={`p-${Date.now()}-${Math.random()}`} className="mb-4 leading-relaxed">
+          <p key={`p-${paragraphKey++}`} className="mb-4 leading-relaxed">
             {renderInlineMath(text)}
           </p>
         );

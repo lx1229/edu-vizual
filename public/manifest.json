@@ -1,0 +1,52 @@
+{
+  "name": "eduVisual - 交互式可视化教育平台",
+  "short_name": "eduVisual",
+  "description": "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#7209b7",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any mask"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "science", "learning"],
+  "shortcuts": [
+    {
+      "name": "数学课程",
+      "short_name": "数学",
+      "description": "浏览数学可视化课程",
+      "url": "/subjects/math",
+      "icons": [{ "src": "/icon-math.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "物理课程",
+      "short_name": "物理",
+      "description": "浏览物理可视化课程",
+      "url": "/subjects/physics",
+      "icons": [{ "src": "/icon-physics.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "化学课程",
+      "short_name": "化学",
+      "description": "浏览化学可视化课程",
+      "url": "/subjects/chemistry",
+      "icons": [{ "src": "/icon-chemistry.png", "sizes": "96x96" }]
+    }
+  ]
+}

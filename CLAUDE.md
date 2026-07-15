@@ -1,8 +1,8 @@
-# edu-board 教育可视化网站 - 项目文档
+# eduVisual 教育可视化网站 - 项目文档
 
 ## 项目概述
 
-edu-board 是一个面向数理化教育的交互式可视化网站，通过 HTML 可视化技术展示数学理论、物理现象和化学结构，部署于 Vercel。
+eduVisual 是一个面向数理化教育的交互式可视化网站，通过 HTML 可视化技术展示数学理论、物理现象和化学结构，部署于 Vercel。
 
 ---
 
@@ -61,7 +61,7 @@ edu-board 是一个面向数理化教育的交互式可视化网站，通过 HTM
 ### 项目结构
 
 ```
-edu-board/
+eduVisual/
 ├── app/
 │   ├── layout.tsx              # 全局布局（字体、元数据、Header）
 │   ├── page.tsx                # 欢迎/着陆页面

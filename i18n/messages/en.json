@@ -1,0 +1,56 @@
+{
+  "common": {
+    "home": "Home",
+    "subjects": "Subjects",
+    "math": "Mathematics",
+    "physics": "Physics",
+    "chemistry": "Chemistry",
+    "learnMore": "Learn More",
+    "backToHome": "Back to Home",
+    "loading": "Loading...",
+    "error": "Error",
+    "tryAgain": "Try Again"
+  },
+  "hero": {
+    "title": "Interactive Visualization Education Platform",
+    "description": "Explore mathematical, physical, and chemical theories through HTML visualizations, making abstract concepts tangible"
+  },
+  "subjects": {
+    "title": "Choose a Subject",
+    "math": {
+      "name": "Mathematics",
+      "description": "Explore the mysteries of numbers, shapes, logic, and abstract structures"
+    },
+    "physics": {
+      "name": "Physics",
+      "description": "Understand the laws of matter, energy, force, and motion"
+    },
+    "chemistry": {
+      "name": "Chemistry",
+      "description": "Study the composition, structure, and properties of matter"
+    }
+  },
+  "learningStages": {
+    "幼儿科普": "Early Childhood",
+    "小学": "Elementary",
+    "中学": "Middle School",
+    "高中": "High School",
+    "大学": "University"
+  },
+  "difficulties": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
+  "lesson": {
+    "title": "Lesson",
+    "visualizations": "Visualizations",
+    "visualizationPanel": "Visualization Panel",
+    "learningStage": "Learning Stage",
+    "expandSidebar": "Expand Course List",
+    "collapseSidebar": "Collapse Course List"
+  },
+  "subjectPage": {
+    "lessons": "Course List"
+  }
+}

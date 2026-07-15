@@ -1,3 +1,5 @@
+export const LEARNING_STAGES = ["幼儿科普", "小学", "中学", "高中", "大学"] as const;
+
 export interface Lesson {
   id: string;
   title: string;
@@ -128,6 +130,15 @@ const mathLessons: Lesson[] = [
     difficulty: "intermediate",
     learningStage: "大学",
     visualizations: ["matrix-visualizer"],
+  },
+  {
+    id: "tricuspoid",
+    title: "三尖瓣线：圆内旋轮线",
+    subject: "math",
+    order: 7,
+    difficulty: "intermediate",
+    learningStage: "大学",
+    visualizations: ["tricuspoid"],
   },
 ];
 
