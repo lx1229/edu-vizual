@@ -1,3 +1,0 @@
-{
-  "buildCommand": "cd /Users/xliu21/Documents/personal/edu-board && npm install && npm run build"
-}

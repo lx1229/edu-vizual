@@ -31,9 +31,9 @@ export async function generateStaticParams() {
   return paths;
 }
 
-async function getPageContent(lessonId: string) {
+async function getPageContent(subject: string, lessonId: string) {
   try {
-    const mdxPath = join(process.cwd(), "content", lessonId + ".mdx");
+    const mdxPath = join(process.cwd(), "content", subject, lessonId + ".mdx");
     const source = await readFile(mdxPath, "utf-8");
     const { data: frontmatter, content: body } = matter(source);
     return { content: body, frontmatter };
@@ -46,7 +46,7 @@ async function LessonPage({ params }: PageProps) {
   const { subject, lesson: lessonId } = await params;
   const lesson = getLesson(subject, lessonId);
   if (!lesson) notFound();
-  const { content } = await getPageContent(lessonId);
+  const { content } = await getPageContent(subject, lessonId);
   return <LessonPageClient lesson={lesson} subjectId={subject} content={content} />;
 }
 

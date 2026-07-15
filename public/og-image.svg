@@ -11,7 +11,7 @@
   <rect width="1200" height="630" fill="url(#grad)"/>
 
   <!-- Main title -->
-  <text x="600" y="280" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="white" text-anchor="middle">eduVisual</text>
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="white" text-anchor="middle">eduVizual</text>
 
   <!-- Subtitle -->
   <text x="600" y="380" font-family="Arial, sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.9">交互式可视化教育平台</text>

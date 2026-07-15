@@ -1,6 +1,6 @@
 {
-  "name": "eduVisual - 交互式可视化教育平台",
-  "short_name": "eduVisual",
+  "name": "eduVizual - 交互式可视化教育平台",
+  "short_name": "eduVizual",
   "description": "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及",
   "start_url": "/",
   "display": "standalone",

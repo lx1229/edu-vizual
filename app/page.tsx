@@ -168,7 +168,7 @@ export default function Home() {
           {/* Main title with gradient */}
           <h1 className="text-7xl md:text-8xl font-bold mb-6">
             <span className="bg-gradient-to-r from-[#7209b7] via-[#f77f00] to-[#06d6a0] bg-clip-text text-transparent drop-shadow-lg">
-              eduVisual
+              eduVizual
             </span>
           </h1>
 
@@ -289,7 +289,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="relative w-full py-6 text-center text-sm text-muted-foreground/60 border-t border-border z-10">
-        <p>eduVisual &copy; 2026 — 让每一个概念都看得见</p>
+        <p>eduVizual &copy; 2026 — 让每一个概念都看得见</p>
       </footer>
     </div>
   );

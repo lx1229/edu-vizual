@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { VIZ_COMPONENTS } from "@/lib/viz-registry";
-import { LEARNING_STAGES, getLessons } from "@/lib/lessons";
+import { LEARNING_STAGES } from "@/lib/lessons";
 import Sidebar from "@/components/layout/Sidebar";
 import MDXContent from "@/components/content/MDXContent";
 
@@ -12,28 +12,32 @@ interface LessonPageClientProps {
   content: string;
 }
 
+const SUBJECT_COLORS: Record<string, string> = {
+  math: "#7209b7",
+  physics: "#f77f00",
+  chemistry: "#06d6a0",
+};
+const SUBJECT_NAMES: Record<string, string> = {
+  math: "数学",
+  physics: "物理",
+  chemistry: "化学",
+};
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner: "入门",
+  intermediate: "中级",
+  advanced: "进阶",
+};
+
 export default function LessonPageClient({ lesson, subjectId, content }: LessonPageClientProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [activeViz, setActiveViz] = useState<string | null>(null);
 
-  // Get all lessons at the same learning stage
-  const getLessonsAtStage = (stage: string) => {
-    return getLessons(subjectId).filter((l) => l.learningStage === stage);
-  };
-
-  const LessonContent = () => (
-    <MDXContent content={content} visualizations={lesson.visualizations?.map((id) => ({ id }))} />
-  );
-
-  const renderViz = (id: string) => {
-    const Component = VIZ_COMPONENTS[id];
-    if (!Component) return null;
-    return <Component key={id} />;
-  };
+  const hasViz = lesson.visualizations && lesson.visualizations.length > 0;
+  const subjectColor = SUBJECT_COLORS[subjectId] ?? "#4361ee";
+  const subjectName = SUBJECT_NAMES[subjectId] ?? subjectId;
+  const stage = LEARNING_STAGES.find((s) => s.id === lesson.learningStage);
 
   return (
     <div className="flex flex-col flex-1">
-      {/* Sidebar */}
       <Sidebar
         subjectId={subjectId}
         currentLessonId={lesson.id}
@@ -41,112 +45,106 @@ export default function LessonPageClient({ lesson, subjectId, content }: LessonP
         onToggle={() => setSidebarCollapsed((v) => !v)}
       />
 
-      {/* Main Content Area */}
       <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? "ml-0" : "ml-64"}`}>
         {/* Breadcrumb */}
-        <div className="w-full px-6 py-4 border-b border-border">
-          <div className="max-w-6xl mx-auto flex items-center gap-2 text-sm">
-            <span className="text-foreground">{lesson.title}</span>
+        <div className="px-8 py-3 border-b" style={{ borderColor: "#e5e7eb" }}>
+          <div className="flex items-center gap-1.5 text-sm" style={{ color: "#9ca3af" }}>
+            <a href="/subjects" className="hover:text-gray-600 transition-colors">学科</a>
+            <span className="select-none">/</span>
+            <a href={`/subjects/${subjectId}`} className="hover:text-gray-600 transition-colors">
+              {subjectName}
+            </a>
+            <span className="select-none">/</span>
+            <span style={{ color: "#374151" }}>{lesson.title}</span>
           </div>
         </div>
 
-        {/* Lesson Content */}
-        <div className="max-w-6xl mx-auto w-full px-6 py-12">
-          <div className={`grid grid-cols-1 gap-8 ${lesson.visualizations && lesson.visualizations.length > 0 ? "lg:grid-cols-3" : "lg:grid-cols-1"}`}>
-            {/* Main Content */}
-            <div className={lesson.visualizations && lesson.visualizations.length > 0 ? "lg:col-span-2" : "w-full"}>
-              <h1 className="text-3xl font-bold mb-2">{lesson.title}</h1>
-              <div className="flex items-center gap-3 mb-8">
+        {/* Page body — single reading column */}
+        <div className="max-w-4xl mx-auto w-full px-8 py-10">
+
+          {/* Title section */}
+          <header className="mb-8">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <span
+                className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                style={{ background: `${subjectColor}18`, color: subjectColor }}
+              >
+                {subjectName}
+              </span>
+              {stage && (
                 <span
-                  className="text-xs font-medium px-2.5 py-1 rounded-full"
-                  style={{
-                    backgroundColor: `${(lesson as any).color || "#7209b7"}15`,
-                    color: (lesson as any).color || "#7209b7",
-                  }}
+                  className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                  style={{ background: `${stage.color}18`, color: stage.color }}
                 >
-                  {(lesson as any).subjectName || "数学"}
+                  {stage.label}
                 </span>
-                {lesson.visualizations && lesson.visualizations.length > 0 && (
-                  <span className="text-xs text-muted-foreground">
-                    交互组件：{lesson.visualizations.join(", ")}
-                  </span>
-                )}
-              </div>
-
-              <LessonContent />
+              )}
+              {lesson.difficulty && (
+                <span
+                  className="text-xs px-2.5 py-1 rounded-full"
+                  style={{ background: "#f3f4f6", color: "#6b7280" }}
+                >
+                  {DIFFICULTY_LABELS[lesson.difficulty as string] ?? lesson.difficulty}
+                </span>
+              )}
             </div>
+            <h1
+              className="text-3xl font-bold tracking-tight"
+              style={{ color: "#111827", lineHeight: 1.3 }}
+            >
+              {lesson.title}
+            </h1>
+          </header>
 
-            {/* Visualization Panel */}
-            {lesson.visualizations && lesson.visualizations.length > 0 && (
-              <div className="lg:col-span-1">
-                <div className="rounded-xl border border-border bg-card p-6 sticky top-20">
-                  <h3 className="font-semibold mb-4">可视化面板</h3>
-                  <div className="space-y-4">
-                    {lesson.visualizations.map((viz) => (
-                      <div key={viz}>
-                        <button
-                          onClick={() => setActiveViz(activeViz === viz ? null : viz)}
-                          className={`w-full text-sm px-3 py-2 rounded-lg text-left transition-colors ${
-                            activeViz === viz
-                              ? "bg-accent/10 text-accent font-medium"
-                              : "text-muted-foreground hover:text-foreground hover:bg-accent/5"
-                          }`}
-                        >
-                          {viz}
-                        </button>
-                        {activeViz === viz && (
-                          <div className="mt-3 rounded-lg border border-border bg-muted/30 min-h-[200px] flex items-center justify-center">
-                            {renderViz(viz)}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Learning Stage Navigation */}
-            <div className="lg:col-span-1">
-              <div className="rounded-xl border border-border bg-card p-6 sticky top-20">
-                <h3 className="font-semibold mb-4">学习阶段</h3>
-                <div className="space-y-4">
-                  {LEARNING_STAGES.map((stage) => {
-                    const lessonsAtStage = getLessonsAtStage(stage.id);
-                    if (lessonsAtStage.length === 0) return null;
-                    return (
-                      <div key={stage.id}>
+          {/* Visualization panel */}
+          {hasViz && (
+            <section className="mb-10">
+              {lesson.visualizations.map((vizId: string) => {
+                const Comp = VIZ_COMPONENTS[vizId];
+                if (!Comp) {
+                  return (
+                    <div
+                      key={vizId}
+                      className="rounded-2xl border p-8 text-center text-sm"
+                      style={{ borderColor: "#e5e7eb", color: "#9ca3af" }}
+                    >
+                      可视化组件「{vizId}」暂未注册
+                    </div>
+                  );
+                }
+                return (
+                  <div
+                    key={vizId}
+                    className="rounded-2xl border p-6"
+                    style={{ borderColor: "#e5e7eb", background: "#fafafa" }}
+                  >
+                    <Suspense
+                      fallback={
                         <div
-                          className="text-xs font-medium px-2 py-1 rounded"
-                          style={{
-                            backgroundColor: `${stage.color}15`,
-                            color: stage.color,
-                          }}
+                          className="flex items-center justify-center py-20 text-sm"
+                          style={{ color: "#9ca3af" }}
                         >
-                          {stage.label}
+                          加载中…
                         </div>
-                        <div className="mt-2 space-y-1">
-                          {lessonsAtStage.map((l) => (
-                            <a
-                              key={l.id}
-                              href={`/subjects/${subjectId}/${l.id}`}
-                              className={`block text-sm px-3 py-2 rounded-lg transition-colors ${
-                                l.id === lesson.id
-                                  ? "bg-accent/10 text-accent font-medium"
-                                  : "text-muted-foreground hover:text-foreground hover:bg-accent/5"
-                              }`}
-                            >
-                              {l.title}
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
+                      }
+                    >
+                      <Comp />
+                    </Suspense>
+                  </div>
+                );
+              })}
+            </section>
+          )}
+
+          {/* Divider between viz and text */}
+          {hasViz && (
+            <div style={{ height: "1px", background: "#f0f0f0", marginBottom: "2.5rem" }} />
+          )}
+
+          {/* MDX article body — skip the first H1 since the page header already shows it */}
+          <article>
+            <MDXContent content={content} skipFirstH1 />
+          </article>
         </div>
       </div>
     </div>

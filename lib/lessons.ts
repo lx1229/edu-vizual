@@ -1,4 +1,12 @@
-export const LEARNING_STAGES = ["幼儿科普", "小学", "中学", "高中", "大学"] as const;
+export const LEARNING_STAGES = [
+  { id: "幼儿科普", label: "幼儿科普 (3–6 岁)", color: "#06d6a0" },
+  { id: "小学", label: "小学 (7–12 岁)", color: "#4361ee" },
+  { id: "中学", label: "中学 (13–15 岁)", color: "#f77f00" },
+  { id: "高中", label: "高中 (16–18 岁)", color: "#7209b7" },
+  { id: "大学", label: "大学 (18+ 岁)", color: "#e63946" },
+] as const;
+
+export type LearningStageId = typeof LEARNING_STAGES[number]["id"];
 
 export interface Lesson {
   id: string;
@@ -6,7 +14,7 @@ export interface Lesson {
   subject: string;
   order: number;
   difficulty: "beginner" | "intermediate" | "advanced";
-  learningStage: "幼儿科普" | "小学" | "中学" | "高中" | "大学";
+  learningStage: LearningStageId;
   visualizations?: string[];
 }
 
