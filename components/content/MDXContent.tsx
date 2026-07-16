@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+import { VIZ_COMPONENTS } from "@/lib/viz-registry";
 import FormulaBlock from "./FormulaBlock";
 
 interface MDXContentProps {
@@ -41,7 +43,7 @@ function renderInlineFormatting(text: string, baseKey: number): React.ReactNode 
     last = regex.lastIndex;
   }
   if (last < text.length) parts.push(text.slice(last));
-  return parts.length === 1 ? parts[0] : <>{parts}</>;
+  return parts.length === 1 ? parts[0] : <>{parts.map((part, i) => <React.Fragment key={i}>{part}</React.Fragment>)}</>;
 }
 
 // ── Table parser ──────────────────────────────────────────────────────────────
@@ -113,6 +115,10 @@ function renderContent(content: string, skipFirstH1 = false): React.ReactNode {
   let listType: "ul" | "ol" | null = null;
   let firstH1Skipped = false;
 
+  // Viz component block state
+  let inVizBlock = false;
+  let vizComponentId = "";
+
   function flushParagraph() {
     if (paragraphLines.length === 0) return;
     const text = paragraphLines.join(" ").trim();
@@ -175,6 +181,40 @@ function renderContent(content: string, skipFirstH1 = false): React.ReactNode {
       continue;
     }
     if (inCode) { codeLines.push(line); continue; }
+
+    // ── Viz component blocks ──────────────────────────────────────────────────
+    if (line.startsWith(":::viz ")) {
+      if (inVizBlock) {
+        // Nested viz block - treat as text
+        if (inVizBlock) {
+          // Accumulate lines inside viz block
+        }
+      } else {
+        flushParagraph(); flushList(); flushTable();
+        const vizId = line.slice(7).trim();
+        inVizBlock = true;
+        vizComponentId = vizId;
+      }
+      continue;
+    }
+    if (inVizBlock) {
+      if (line.trim() === ":::") {
+        // End of viz block - render component
+        const VizComponent = VIZ_COMPONENTS[vizComponentId];
+        if (VizComponent) {
+          elements.push(
+            <div key={k()} style={{ margin: "1.5rem 0" }}>
+              <VizComponent />
+            </div>
+          );
+        }
+        inVizBlock = false;
+        vizComponentId = "";
+      } else {
+        // Accumulate lines inside viz block (not needed for tricuspoid, but for extensibility)
+      }
+      continue;
+    }
 
     // ── Block formula: $$ on its own line ────────────────────────────────────
     if (line.trim() === "$$") {
