@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { getLessons } from "@/lib/lessons";
 
 const subjects = [
   {
@@ -45,6 +46,10 @@ const subjects = [
     ),
   },
 ];
+
+function getSubjectLessonCount(subjectId: string): number {
+  return getLessons(subjectId).length;
+}
 
 interface Particle {
   x: number;
@@ -159,26 +164,22 @@ export default function Home() {
       <ParticleBackground />
 
       {/* Hero Section */}
-      <section className="relative w-full py-24 px-6 text-center z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Decorative elements */}
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 border border-white/5 rounded-full animate-pulse-glow" />
-          <div className="absolute bottom-1/4 right-1/4 w-24 h-24 border-2 border-white/5 rotate-45" />
-
+      <section className="relative w-full py-32 px-6 text-center z-10">
+        <div className="max-w-5xl mx-auto">
           {/* Main title with gradient */}
-          <h1 className="text-7xl md:text-8xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-[#7209b7] via-[#f77f00] to-[#06d6a0] bg-clip-text text-transparent drop-shadow-lg">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8">
+            <span className="bg-gradient-to-r from-[#7209b7] via-[#f77f00] to-[#06d6a0] bg-clip-text text-transparent">
               eduVizual
             </span>
           </h1>
 
           {/* Slogan with typing effect */}
-          <p className="text-2xl md:text-3xl text-muted-foreground mb-8">
+          <p className="text-3xl md:text-4xl text-muted-foreground mb-6">
             <span className="typing-effect">让抽象概念触手可及</span>
           </p>
 
           {/* Subtitle */}
-          <p className="text-sm text-muted-foreground/70 max-w-xl mx-auto mb-12">
+          <p className="text-base md:text-lg text-muted-foreground/70 max-w-2xl mx-auto mb-12">
             通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及
           </p>
 
@@ -192,7 +193,7 @@ export default function Home() {
                 style={{ perspective: "1000px" }}
               >
                 <div
-                  className="rounded-2xl border border-border bg-card/80 backdrop-blur p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+                  className="relative rounded-2xl border border-border/50 bg-card/60 backdrop-blur-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:border-white/20"
                   style={{
                     transform: isMounted
                       ? `rotateX(${(mousePos.y - window.innerHeight / 2) / 50}deg) rotateY(${-(mousePos.x - window.innerWidth / 2) / 50}deg)`
@@ -202,28 +203,39 @@ export default function Home() {
                       : `0 0 45px ${subject.color}20`,
                   }}
                 >
+                  {/* Glassmorphism overlay */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                   <div
-                    className="mb-4 rounded-xl p-3 inline-block animate-float"
+                    className="relative mb-4 rounded-xl p-3 inline-block animate-float"
                     style={{ backgroundColor: `${subject.color}15` }}
                   >
                     <div
-                      className="transition-transform duration-500 group-hover:rotate-12"
+                      className="transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110"
                       style={{ color: subject.color }}
                     >
                       {subject.icon}
                     </div>
                   </div>
-                  <h2 className="text-2xl font-semibold mb-1">
+                  <h2 className="relative text-2xl font-semibold mb-1">
                     {subject.name}
                   </h2>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="relative text-sm text-muted-foreground mb-3">
                     {subject.nameEn}
                   </p>
-                  <p className="text-sm text-muted-foreground/80">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span
+                      className="relative inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                      style={{ backgroundColor: `${subject.color}15`, color: subject.color }}
+                    >
+                      {getSubjectLessonCount(subject.id)} 门课程
+                    </span>
+                  </div>
+                  <p className="relative text-sm text-muted-foreground/80">
                     {subject.description}
                   </p>
                   <span
-                    className="inline-block mt-4 text-sm font-medium transition-colors"
+                    className="relative inline-block mt-4 text-sm font-medium transition-colors"
                     style={{ color: subject.color }}
                   >
                     开始学习 →
@@ -236,32 +248,35 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="relative w-full py-20 px-6 z-10">
+      <section className="relative w-full py-24 px-6 z-10">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">核心特性</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">核心特性</h2>
             <p className="text-muted-foreground">探索我们的可视化技术</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 rounded-2xl bg-card/50 border border-border hover:bg-card/80 transition-colors">
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-xl font-semibold mb-2">交互式探索</h3>
-              <p className="text-muted-foreground text-sm">
+            <div className="relative text-center p-8 rounded-2xl bg-card/30 border border-border/50 hover:bg-card/50 transition-colors">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#7209b7]/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative text-5xl mb-6">🎯</div>
+              <h3 className="relative text-xl font-semibold mb-3">交互式探索</h3>
+              <p className="relative text-muted-foreground text-sm">
                 拖动、缩放、点击，与可视化内容深度互动
               </p>
             </div>
-            <div className="text-center p-6 rounded-2xl bg-card/50 border border-border hover:bg-card/80 transition-colors">
-              <div className="text-4xl mb-4">⚡</div>
-              <h3 className="text-xl font-semibold mb-2">实时计算</h3>
-              <p className="text-muted-foreground text-sm">
+            <div className="relative text-center p-8 rounded-2xl bg-card/30 border border-border/50 hover:bg-card/50 transition-colors">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#f77f00]/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative text-5xl mb-6">⚡</div>
+              <h3 className="relative text-xl font-semibold mb-3">实时计算</h3>
+              <p className="relative text-muted-foreground text-sm">
                 参数即时调整，结果实时呈现
               </p>
             </div>
-            <div className="text-center p-6 rounded-2xl bg-card/50 border border-border hover:bg-card/80 transition-colors">
-              <div className="text-4xl mb-4">🔮</div>
-              <h3 className="text-xl font-semibold mb-2">3D 模型</h3>
-              <p className="text-muted-foreground text-sm">
+            <div className="relative text-center p-8 rounded-2xl bg-card/30 border border-border/50 hover:bg-card/50 transition-colors">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#06d6a0]/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative text-5xl mb-6">🔮</div>
+              <h3 className="relative text-xl font-semibold mb-3">3D 模型</h3>
+              <p className="relative text-muted-foreground text-sm">
                 三维空间中的分子、几何体可视化
               </p>
             </div>
@@ -270,9 +285,9 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative w-full py-16 px-6 z-10">
+      <section className="relative w-full py-20 px-6 z-10">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="rounded-3xl bg-gradient-to-r from-[#7209b7]/20 via-[#f77f00]/20 to-[#06d6a0]/20 border border-border p-12">
+          <div className="relative rounded-3xl bg-gradient-to-r from-[#7209b7]/20 via-[#f77f00]/20 to-[#06d6a0]/20 border border-border p-12">
             <h2 className="text-3xl font-bold mb-4">准备好开始探索了吗？</h2>
             <p className="text-muted-foreground mb-8">
               选择你感兴趣的学科，开启可视化学习之旅
@@ -288,7 +303,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="relative w-full py-6 text-center text-sm text-muted-foreground/60 border-t border-border z-10">
+      <footer className="relative w-full py-8 text-center text-sm text-muted-foreground/60 border-t border-border z-10">
         <p>eduVizual &copy; 2026 — 让每一个概念都看得见</p>
       </footer>
     </div>

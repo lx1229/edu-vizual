@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages = [
     '/',
-    '/subjects',
+    // '/subjects',
     '/subjects/math',
     '/subjects/physics',
     '/subjects/chemistry',

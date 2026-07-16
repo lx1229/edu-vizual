@@ -38,7 +38,7 @@ export default async function SubjectPage({ params }: SubjectPageProps) {
       >
         <div className="max-w-4xl mx-auto">
           <Link
-            href="/subjects"
+            href="/"
             className="text-sm text-muted-foreground hover:underline mb-4 inline-block"
           >
             ← 返回学科列表

@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Header from "@/components/layout/Header";
+import StructuredData from "@/components/StructuredData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,15 +19,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "eduVizual - Interactive Visualization Education Platform",
+    default: "eduVizual - 交互式教育可视化平台",
     template: "%s | eduVizual",
   },
-  description: "Explore mathematical, physical, and chemical theories through HTML visualizations, making abstract concepts tangible",
-  keywords: ["math visualization", "physics visualization", "chemistry visualization", "education", "interactive visualization", "STEM education"],
-  authors: [{ name: "eduVizual", url: "https://eduviz.cn" }],
+  description: "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及。提供交互式探索、实时计算和 3D 模型可视化。",
+  keywords: ["教育可视化", "数学可视化", "物理可视化", "化学可视化", "交互式学习", "STEM 教育", "HTML5 可视化", "在线学习平台"],
+  authors: [{ name: "eduVizual", url: "https://eduvizual.littleyao.site" }],
   creator: "eduVizual",
   publisher: "eduVizual",
-  metadataBase: new URL("https://eduviz.cn"),
+  metadataBase: new URL("https://eduvizual.littleyao.site"),
   alternates: {
     canonical: "/",
     languages: {
@@ -36,24 +37,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "zh_CN",
     url: "/",
     siteName: "eduVizual",
-    title: "eduVizual - Interactive Visualization Education Platform",
-    description: "Explore mathematical, physical, and chemical theories through HTML visualizations, making abstract concepts tangible",
+    title: "eduVizual - 交互式教育可视化平台",
+    description: "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及。",
     images: [
       {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "eduVizual",
+        alt: "eduVizual - 交互式教育可视化平台",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "eduVizual - Interactive Visualization Education Platform",
-    description: "Explore mathematical, physical, and chemical theories through HTML visualizations, making abstract concepts tangible",
+    title: "eduVizual - 交互式教育可视化平台",
+    description: "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及。",
     images: ["/og-image.svg"],
     creator: "@eduviz",
   },
@@ -72,11 +73,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/icon.svg",
+    icon: "/favicon.ico",
     shortcut: "/icon-192.png",
     apple: "/icon-512.png",
   },
   manifest: "/manifest.json",
+  other: {
+    "google-site-verification": "your-google-verification-code",
+  },
 };
 
 export default async function RootLayout({
@@ -94,6 +98,8 @@ export default async function RootLayout({
           <NextIntlClientProvider locale={locale} messages={messages}>
             <Header />
             <main className="flex-1">{children}</main>
+            <StructuredData type="Organization" />
+            <StructuredData type="WebSite" />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
