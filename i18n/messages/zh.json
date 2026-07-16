@@ -9,7 +9,9 @@
     "backToHome": "返回首页",
     "loading": "加载中...",
     "error": "错误",
-    "tryAgain": "重试"
+    "tryAgain": "重试",
+    "zh": "中文",
+    "en": "English"
   },
   "hero": {
     "title": "交互式可视化教育平台",

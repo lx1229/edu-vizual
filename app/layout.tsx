@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { cookies } from "next/headers";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 
@@ -17,11 +18,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "eduVizual - 交互式可视化教育平台",
+    default: "eduVizual - Interactive Visualization Education Platform",
     template: "%s | eduVizual",
   },
-  description: "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及",
-  keywords: ["数学可视化", "物理可视化", "化学可视化", "教育", "interactive visualization", "STEM education"],
+  description: "Explore mathematical, physical, and chemical theories through HTML visualizations, making abstract concepts tangible",
+  keywords: ["math visualization", "physics visualization", "chemistry visualization", "education", "interactive visualization", "STEM education"],
   authors: [{ name: "eduVizual", url: "https://eduviz.cn" }],
   creator: "eduVizual",
   publisher: "eduVizual",
@@ -30,15 +31,16 @@ export const metadata: Metadata = {
     canonical: "/",
     languages: {
       "zh-CN": "/",
+      "en": "/en",
     },
   },
   openGraph: {
     type: "website",
-    locale: "zh_CN",
+    locale: "en_US",
     url: "/",
     siteName: "eduVizual",
-    title: "eduVizual - 交互式可视化教育平台",
-    description: "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及",
+    title: "eduVizual - Interactive Visualization Education Platform",
+    description: "Explore mathematical, physical, and chemical theories through HTML visualizations, making abstract concepts tangible",
     images: [
       {
         url: "/og-image.svg",
@@ -50,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "eduVizual - 交互式可视化教育平台",
-    description: "通过 HTML 可视化展示数学、物理、化学理论，让抽象概念触手可及",
+    title: "eduVizual - Interactive Visualization Education Platform",
+    description: "Explore mathematical, physical, and chemical theories through HTML visualizations, making abstract concepts tangible",
     images: ["/og-image.svg"],
     creator: "@eduviz",
   },
@@ -77,16 +79,23 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('locale')?.value || 'en';
+  const messages = (await import(`@/i18n/messages/${locale}.json`)).default;
   return (
-    <html lang="zh-CN" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang={locale} className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col">
-        <Header />
-        <main className="flex-1">{children}</main>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <Header />
+            <main className="flex-1">{children}</main>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

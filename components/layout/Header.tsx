@@ -3,16 +3,20 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { ThemeToggle } from "../ui/ThemeToggle";
+import { LanguageSwitcher } from "../ui/LanguageSwitcher";
 
 const navLinks = [
-  { href: "/subjects/math", label: "数学", color: "#7209b7" },
-  { href: "/subjects/physics", label: "物理", color: "#f77f00" },
-  { href: "/subjects/chemistry", label: "化学", color: "#06d6a0" },
+  { href: "/subjects/math", color: "#7209b7" },
+  { href: "/subjects/physics", color: "#f77f00" },
+  { href: "/subjects/chemistry", color: "#06d6a0" },
 ];
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -74,7 +78,7 @@ export default function Header() {
                     : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                 }`}
               >
-                {item.label}
+                {t(`common.${item.href.split("/")[2]}`)}
                 {isActive && (
                   <span
                     className="absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-0.5 rounded-full"
@@ -92,8 +96,13 @@ export default function Header() {
             className="px-4 py-1.5 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-opacity shadow-sm"
             style={{ background: "linear-gradient(135deg, #7209b7, #06d6a0)" }}
           >
-            全部学科
+            {t("common.subjects")}
           </Link>
+
+          <div className="w-px h-4 bg-foreground/15 mx-2" />
+
+          <ThemeToggle />
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>

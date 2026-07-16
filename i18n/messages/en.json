@@ -9,7 +9,9 @@
     "backToHome": "Back to Home",
     "loading": "Loading...",
     "error": "Error",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "zh": "中文",
+    "en": "English"
   },
   "hero": {
     "title": "Interactive Visualization Education Platform",
